@@ -1,10 +1,11 @@
+/*=====================================================================*
+ *          UV SPHERE Start
+ *=====================================================================*/
 var uvSphere = {};
 
-/*=====================================================================*
- *			UV SPHERE Start
- *=====================================================================*/
-
-uvSphere.generateVerts = function(longit, lat, rad){
+/*GENERATES VERTICES, INDICES, TEXTURE COORDINATES
+ *NORMALS AND TANGENTS*/
+uvSphere.generateData = function(longit, lat, rad){
 	var latitudeBands = lat;
     var longitudeBands = longit;
     var radius = rad;
@@ -52,7 +53,7 @@ uvSphere.generateVerts = function(longit, lat, rad){
         tangents.push(xUV);
         tangents.push(yUV);
         tangents.push(zUV);
-      }
+        }
     }
 
     var indexData = [];
@@ -76,7 +77,7 @@ uvSphere.generateVerts = function(longit, lat, rad){
                 indexData, 
                 tangents];
     return ret;
-}
+ }
 
 uvSphere.generateRandColors = function(vertices){
 	var count = 0;
@@ -98,4 +99,4 @@ uvSphere.generateRandColors = function(vertices){
 	}
 	
 	return /*myGL.flatten(*/colors/*)*/;
-}
+ }
