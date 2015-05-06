@@ -43,7 +43,7 @@ cube.generateVerts = function(){
         -1.0,  1.0, -1.0
     ];
     return vertices;
-}
+ }
  
 cube.generateTextureCoords = function(){
 	var textureCoords = [
@@ -78,7 +78,7 @@ cube.generateTextureCoords = function(){
  		0,1,
  	];
  	return textureCoords;
-}
+ }
 
 cube.generateBasicColors = function(){
 	var colors = [
@@ -103,7 +103,7 @@ cube.generateIndices = function(){
     ];
     
     return indices;
-}
+ }
 
 cube.generateNormals = function(){
     var normals = [
@@ -125,4 +125,4 @@ cube.generateNormals = function(){
     }
 
     return normalsPerVert;
-}
+ }
