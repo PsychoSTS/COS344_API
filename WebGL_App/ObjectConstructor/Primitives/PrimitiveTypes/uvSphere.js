@@ -1,12 +1,18 @@
 /*=====================================================================*
  *          UV SPHERE Start
  *=====================================================================*/
-var uvSphere = {};
+var UVSphere = function(){
+    this.vertices;
+    this.colors;
+    this.textureCoords;
+    this.indices;
+    this.normals;
+    this.tangents;
 
-/*GENERATES VERTICES, INDICES, TEXTURE COORDINATES
+    /*GENERATES VERTICES, INDICES, TEXTURE COORDINATES
  *NORMALS AND TANGENTS*/
-uvSphere.generateData = function(longit, lat, rad){
-	var latitudeBands = lat;
+this.generateData = function(longit, lat, rad){
+    var latitudeBands = lat;
     var longitudeBands = longit;
     var radius = rad;
 
@@ -71,32 +77,54 @@ uvSphere.generateData = function(longit, lat, rad){
       }
     }
 
-    var ret = [ vertexPositionData, 
+    
+    this.vertices = vertexPositionData;
+    this.normals = normalData;
+    this.textureCoords = textureCoordData;
+    this.indices = indexData;
+    this.tangents = tangents;
+
+    /*var ret = [ vertexPositionData, 
                 normalData, 
                 textureCoordData, 
                 indexData, 
-                tangents];
-    return ret;
+                tangents];*/
+    //return ret;
  }
 
-uvSphere.generateRandColors = function(vertices){
-	var count = 0;
-	var colors = [];
-	for (var i=0; i < (vertices.length/3); i++) {
-		if(count == 0){
-		    count++;
-		    colors.push([1.0, 0.0, 0.0, 1.0]);
-		}else if(count == 1){
-		    count++;
-		    colors.push([0.0, 1.0, 0.0, 1.0]);
-		}else if(count == 2){
-		    count++;
-		    colors.push([0.0, 0.0, 1.0, 1.0]);
-		}else if(count == 3){
-		    colors.push([0.0, 1.0, 1.0, 1.0]);
-		    count = 0;
-		}
-	}
-	
-	return /*myGL.flatten(*/colors/*)*/;
- }
+this.generateRandColors = function(vertices){
+    var count = 0;
+    var colors = [];
+    for (var i=0; i < (vertices.length/3); i++) {
+        if(count == 0){
+            count++;
+            colors.push([1.0, 0.0, 0.0, 1.0]);
+        }else if(count == 1){
+            count++;
+            colors.push([0.0, 1.0, 0.0, 1.0]);
+        }else if(count == 2){
+            count++;
+            colors.push([0.0, 0.0, 1.0, 1.0]);
+        }else if(count == 3){
+            colors.push([0.0, 1.0, 1.0, 1.0]);
+            count = 0;
+        }
+    }
+
+    var colorsOut = [];
+    for(var i = 0; i < colors.length; i++){
+        for(var k = 0; k < colors[i].length; k++){
+            colorsOut.push(colors[i][k]);
+        }
+    }
+    
+    this.colors = colorsOut;
+    //return /*myGL.flatten(*/colors/*)*/;
+}
+
+ this.generateData(30,30,1);
+ this.generateRandColors(this.vertices);
+
+
+};
+

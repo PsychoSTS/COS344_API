@@ -1,10 +1,16 @@
 /*=====================================================================*
  *          Pyramid Start
  *=====================================================================*/
-var pyramid = {};
+var Pyramid = function(){
 
-pyramid.generateVerts = function(){
-	var vertices = [
+    this.vertices;
+    this.colors;
+    this.textureCoords;
+    this.indices;
+    this.normals;
+
+this.generateVerts = function(){
+    var vertices = [
         // Front face
          0.0,  1.0,  0.0,  //Vertex 1
         -1.0, -1.0,  1.0,  //Vertex 2
@@ -30,11 +36,11 @@ pyramid.generateVerts = function(){
          1.0, -1.0, -1.0, //Vertex 4
         -1.0, -1.0, -1.0   //Vertex 5
     ];
-    return vertices;
+    this.vertices = vertices;
  }
- 
-pyramid.generateBasicInterpolatedColors = function(){
-	var colors = [
+
+this.generateBasicInterpolatedColors = function(){
+    var colors = [
         // Front face
         1.0, 0.0, 0.0, 1.0,
         0.0, 1.0, 0.0, 1.0,
@@ -61,10 +67,10 @@ pyramid.generateBasicInterpolatedColors = function(){
         0.0, 0.0, 1.0, 1.0
     ];
     
-    return colors;
+    this.colors = colors;
  }
 
-pyramid.generateBasicColors = function(){
+this.generateBasicColors = function(){
     var colors = [
         // Front face
         1.0, 0.0, 0.0, 1.0,
@@ -92,38 +98,54 @@ pyramid.generateBasicColors = function(){
         0.0, 0.0, 1.0, 1.0
     ];
     
-    return colors;
+    this.colors = colors;
  }
 
-pyramid.generateTextureCoords = function(){
- 	var textureCoords = [
- 		0,0,
- 		0.5,1,
- 		0,1,
+this.generateTextureCoords = function(){
+    var textureCoords = [
+        0,0,
+        0.5,1,
+        0,1,
 
- 		0,0,
- 		0.5,1,
- 		0,1,
+        0,0,
+        0.5,1,
+        0,1,
 
- 		0,0,
- 		0.5,1,
- 		0,1,
+        0,0,
+        0.5,1,
+        0,1,
 
- 		0,0,
- 		0.5,1,
- 		0,1,
+        0,0,
+        0.5,1,
+        0,1,
 
- 		0,0,
- 		1,0,
- 		1,1,
+        0,0,
+        1,0,
+        1,1,
 
- 		0,0,
- 		1,1,
- 		0,1,
- 	];
- 	return textureCoords;
+        0,0,
+        1,1,
+        0,1,
+    ];
+    this.textureCoords = textureCoords;
  }
 
-pyramid.generateNormals = function(){
+this.generateNormals = function(){
     
 }
+
+this.generateVerts();
+this.generateTextureCoords();
+this.generateBasicInterpolatedColors();
+//this.generateIndices();
+//this.generateNormals();
+};
+
+
+ 
+
+
+
+
+
+

@@ -1,9 +1,6 @@
-var icosphere = {};
+var IcoSphere = function(){
 
-/*=====================================================================*
- *			Icosphere Start
- *=====================================================================*/
-icosphere.generateVerts = function(vertices, indices, detail){
+this.generateVerts = function(vertices, indices, detail){
 	var vertexData = icosahedron.generateVerts(vertices, indices);
 	var indexData = [];
 	var count = detail;
@@ -38,7 +35,7 @@ icosphere.generateVerts = function(vertices, indices, detail){
 	}
 }
 
-icosphere.generateRandColors = function(vertices){
+this.generateRandColors = function(vertices){
 	var count = 0;
 	var colors = [];
 	for (var i=0; i < (vertices.length/3); i++) {
@@ -60,7 +57,7 @@ icosphere.generateRandColors = function(vertices){
 	return myGL.flatten(colors);
 }
 
-icosphere.subdivideFace = function(count, p1, p2, p3, indices, vertices){
+this.subdivideFace = function(count, p1, p2, p3, indices, vertices){
 	var countTmp = count;
 	p1 = icosphere.movePointToSphere(p1);
 	p2 = icosphere.movePointToSphere(p2);
@@ -98,7 +95,7 @@ icosphere.subdivideFace = function(count, p1, p2, p3, indices, vertices){
 	return;
 }
 
-icosphere.getMid = function(p1, p2){
+this.getMid = function(p1, p2){
 	var point = [
 		((p1[0]+p2[0])/2),
 		((p1[1]+p2[1])/2),
@@ -107,7 +104,7 @@ icosphere.getMid = function(p1, p2){
 	return point;
 }
 
-icosphere.movePointToSphere = function(p){
+this.movePointToSphere = function(p){
 	var vec = [];
 	var vecDist = Math.sqrt(Math.pow(p[0], 2) + Math.pow(p[1], 2) + Math.pow(p[2], 2));
 
@@ -118,7 +115,7 @@ icosphere.movePointToSphere = function(p){
 	return vec;
 }
 
-icosphere.makeFace = function(p1, p2, p3, indices, vertices){
+this.makeFace = function(p1, p2, p3, indices, vertices){
 	if(indices.length == 0){
 		indices.push([0,1,2]);
 		vertices.push(p1);
@@ -166,7 +163,7 @@ icosphere.makeFace = function(p1, p2, p3, indices, vertices){
 	}
 }
 
-icosphere.isEqual = function(p1, p2){
+this.isEqual = function(p1, p2){
 	if(p1.length != p2.length)
 		return false;
 	for(var i = 0; i < p1.length; i++){
@@ -176,7 +173,7 @@ icosphere.isEqual = function(p1, p2){
 	return true;
 }
 
-icosphere.findLargest = function(arr){
+this.findLargest = function(arr){
 	var L = 0;
 	for(var i = 0; i < arr.length; i++){
 		for(var k = 0; k < arr[i].length; k++){
@@ -186,3 +183,9 @@ icosphere.findLargest = function(arr){
 	}
 	return L;
 }
+};
+
+
+
+
+

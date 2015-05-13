@@ -1,9 +1,6 @@
-var icosahedron = {};
+var Icosahedron = function(){
 
-/*=====================================================================*
- *			Icosahedron Start
- *=====================================================================*/
-icosahedron.generateVerts = function(vertices, indices){
+this.generateVerts = function(vertices, indices){
 	var t = (0.5 + Math.sqrt(5.0)) / 2.0;
 	var vertexData = [
 		[-1,  t,  0],//0
@@ -57,3 +54,4 @@ icosahedron.generateVerts = function(vertices, indices){
      	}
      	return vertices;
 }
+};

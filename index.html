@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!--SHADERS-->
+		<script id="shader-fs" type="x-shader/x-fragment">
+			precision highp float;
+
+			uniform bool uUseLighting;
+			uniform vec4 uLightAmbient;
+			uniform vec4 uLightSpecular;
+			uniform vec4 uLightDiffuse;
+
+			uniform vec4 uMaterialAmbient;
+			uniform vec4 uMaterialSpecular;
+			uniform vec4 uMaterialDiffuse;
+			uniform float uMaterialShininess;
+
+			uniform bool uUseMaterial;
+			uniform sampler2D uTSampler;
+
+			varying vec4 vColor;
+			varying vec2 vTextureCoord;
+			varying vec3 vNormal;
+			varying vec3 vEyeVec;
+			varying vec3 vLightDir;
+
+			void main(void){
+				vec3 L = normalize(vLightDir);
+ 				vec3 N = normalize(vNormal);
+
+ 				float lambertTerm = dot(N,-L);
+
+ 				vec4 Ia = uLightAmbient;
+
+ 				vec4 Id = vec4(0.0,0.0,0.0,1.0);
+
+ 				vec4 Is = vec4(0.0,0.0,0.0,1.0);
+
+ 				 if(lambertTerm > 0.0) //only if lambertTerm is positive
+				 {
+				  Id = uMaterialDiffuse * texture2D(uTSampler, vTextureCoord) * lambertTerm; //add diffuse term
+				  
+					  vec3 E = normalize(vEyeVec);
+					  vec3 R = reflect(L, N);
+					  float specular = pow( max(dot(R, E), 0.0), uMaterialShininess);
+					  
+					  Is = uLightDiffuse * specular; //add specular term 
+				 }
+
+				//if(uUseMaterial){
+					//Final color
+				 	vec4 finalColor = Ia + Id + Is;
+				 	finalColor.a = 1.0;
+					 
+				 	gl_FragColor = texture2D(uTSampler, vTextureCoord);//finalColor;
+				//}
+				/*else {
+					gl_FragColor = vColor;
+				}*/
+			}
+		</script>
+		<script id="shader-vs" type="x-shader/x-vertex">
+			attribute vec3 aVertexPosition;
+			attribute vec4 aVertexColor;
+			attribute vec2 aVertexTextureCoord;
+			attribute vec3 aVertexNormal;
+
+			uniform bool uUseMaterial;
+
+			uniform vec3 uLightPosition;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat4 uMMatrix;
+			uniform mat4 uNMatrix;
+
+			varying vec4 vColor;
+			varying vec4 vDiffuse;
+			varying vec2 vTextureCoord;
+			varying vec3 vNormal;
+			varying vec3 vEyeVec;
+			varying vec3 vLightDir;
+			
+			void main(void){
+				mat4 MV = uMVMatrix * uMMatrix;
+
+				vec4 vertex = MV * vec4(aVertexPosition, 1.0);
+
+				vNormal = vec3(uNMatrix * vec4(aVertexNormal, 0.0));
+
+				vLightDir = vertex.xyz - uLightPosition;
+
+				vEyeVec = -vec3(vertex.xyz);
+
+				if(uUseMaterial){
+					vTextureCoord = aVertexTextureCoord;
+				}else{
+					vColor = aVertexColor;
+				}
+
+				gl_Position = uPMatrix * MV * vec4(aVertexPosition, 1.0);
+			}
+			
+		</script>
+
+		<!--LIBRARIES-->
+		<script type="text/javascript" src="WebGL_App/Maths/gl-matrix.js"></script>
+
+		<!--EXTERNAL BLENDER 3D MODELS-->
+		<script type="text/javascript" src="WebGL_App/Models/forestFloor.json"></script>
+		<script type="text/javascript" src="WebGL_App/Models/forestTree001.json"></script>
+		<script type="text/javascript" src="WebGL_App/Models/forestRock001.json"></script>
+		<script type="text/javascript" src="WebGL_App/Models/couldron.json"></script>
+
+		<!--GLOBAL DECLERATIONS-->
+		<script type="text/javascript" src="WebGL_App/Global.js"></script>
+
+		<!--PRIMITIVES-->
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveTypes/Grid.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveTypes/cube.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveTypes/pyramid.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveTypes/icosahedron.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveTypes/icosphere.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveTypes/uvSphere.js"></script>
+
+		<!--OBJECT/MATERIAL CLASSES-->
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Object/Material.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Object/Object.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/light.js"></script>
+
+		<!--CONSTRUCTORS-->
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/Primitives/PrimitiveConstructor.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/ObjectConstructor.js"></script>
+		<script type="text/javascript" src="WebGL_App/ObjectConstructor/ExternalLoader.js"></script>
+
+		<!--SHADER PROGRAM-->
+		<script type="text/javascript" src="WebGL_App/ShaderProgram/ShaderProgram.js"></script>
+
+		<!--SCENE-->
+		<script type="text/javascript" src="WebGL_App/Scene/Assets/Assets.js"></script>
+		<script type="text/javascript" src="WebGL_App/Scene/Camera.js"></script>
+		<script type="text/javascript" src="WebGL_App/Scene/CameraControler.js"></script>
+		<script type="text/javascript" src="WebGL_App/Scene/TransformConstructor.js"></script>
+		<script type="text/javascript" src="WebGL_App/Scene/Scene.js"></script>
+
+		<!--MAIN APP-->
+		<script type="text/javascript" src="WebGL_App/WebGL_App.js"></script>
+
+		<script type="text/javascript">
+			function webGLStart(){
+				var app = new WebGL_App("canvas");
+			}
+			
+		</script>
+	</head>
+	<body onload="webGLStart();">
+		<canvas id="canvas" style="border: none;" width="900" height="700"></canvas>
+	</body>
+</html>
