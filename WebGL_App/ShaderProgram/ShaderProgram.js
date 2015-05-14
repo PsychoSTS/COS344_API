@@ -99,5 +99,29 @@ var ShaderConstructor = function(){
 	    shaderProgram.uLightDiffuse = gl.getUniformLocation(shaderProgram, "uLightDiffuse");
 	}
 
+	this.initGridShader = function(){
+		var fragmentShader = this.getShader(gl, "shader-fs-grid");
+	    var vertexShader = this.getShader(gl, "shader-vs-grid");
+		
+	    gridShaderProgram = gl.createProgram();
+	    gl.attachShader(gridShaderProgram, vertexShader);
+	    gl.attachShader(gridShaderProgram, fragmentShader);
+	    gl.linkProgram(gridShaderProgram);
+
+	    if (!gl.getProgramParameter(gridShaderProgram, gl.LINK_STATUS)) {
+	        alert("Could not initialise shaders");
+	    }
+
+	    gl.useProgram(gridShaderProgram);
+
+	    gridShaderProgram.aVertexPosition = gl.getAttribLocation(gridShaderProgram, "aVertexPosition");
+	    gl.enableVertexAttribArray(gridShaderProgram.aVertexPosition);
+		gridShaderProgram.aVertexColor = gl.getAttribLocation(gridShaderProgram, "aVertexColor");
+	    gl.enableVertexAttribArray(gridShaderProgram.aVertexColor);
+
+	    gridShaderProgram.uPMatrix = gl.getUniformLocation(gridShaderProgram, "uPMatrix");
+	    gridShaderProgram.uMVMatrix = gl.getUniformLocation(gridShaderProgram, "uMVMatrix");
+	    gridShaderProgram.uMMatrix = gl.getUniformLocation(gridShaderProgram, "uMMatrix");
+	}
 	//info("Shader Program Created");
 };

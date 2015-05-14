@@ -64,7 +64,6 @@ var Object = function(t, data, useMat){
 			colorBuffer.itemSize = 4;
 			colorBuffer.numItems = colors.length/4;
 		}
-
 		
 		//BUFFER FOR THE NORMALS
 		if(normals){
@@ -96,27 +95,28 @@ var Object = function(t, data, useMat){
 	this.draw = function(){
 		this.buildMM();
 		//MATERIAL SET PROPERTIES
-		material.setProperties();
-		gl.uniform1i(shaderProgram.uUseMaterial, useMaterial);
+		if(useMaterial)
+			material.setProperties();
+		gl.uniform1i(currentProgram.uUseMaterial, useMaterial);
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-	    gl.vertexAttribPointer(shaderProgram.aVertexPosition, vertexBuffer.itemSize , gl.FLOAT, false, 0, 0);
+	    gl.vertexAttribPointer(currentProgram.aVertexPosition, vertexBuffer.itemSize , gl.FLOAT, false, 0, 0);
 
-	    if(colors && textureCoords == null){
+	    if(colors && colors.length > 0 && textureCoords == null){
 	    	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    		gl.vertexAttribPointer(shaderProgram.aVertexColor, colorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    		gl.vertexAttribPointer(currentProgram.aVertexColor, colorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 	    }
 	    else gl.disableVertexAttribArray(1);
 
-    	if(textureCoords){
+    	if(textureCoords && textureCoords.length > 0){
     		gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
-    		gl.vertexAttribPointer(shaderProgram.aVertexTextureCoord, textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    		gl.vertexAttribPointer(currentProgram.aVertexTextureCoord, textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
     	}
     	else gl.disableVertexAttribArray(2);
 
-    	if(normals){
+    	if(normals && normals.length > 0){
     		gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
-    		gl.vertexAttribPointer(shaderProgram.aVertexNormal, normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    		gl.vertexAttribPointer(currentProgram.aVertexNormal, normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
     	}
     	else gl.disableVertexAttribArray(3);
 
@@ -134,24 +134,26 @@ var Object = function(t, data, useMat){
 	}
 	var deg = 0;
 	this.buildMM = function(){
-		if(type == UVSPHERE){
-			rotation = [1,1,1];
-			deg += 0.01;
-		}
+		//if(type == UVSPHERE){
+			//rotation = [1,1,1];
+			//deg += 0.01;
+		//}
 
 		mat4.identity(mmMatrix);
 		mat4.rotate(mmMatrix, mmMatrix, degToRad(deg), rotation);
 		mat4.scale(mmMatrix, mmMatrix, [scale, scale, scale]);
 		mat4.translate(mmMatrix, mmMatrix, position);
-		gl.uniformMatrix4fv(shaderProgram.uMMatrix, false, mmMatrix);
+		gl.uniformMatrix4fv(currentProgram.uMMatrix, false, mmMatrix);
 
-		var mv = [];
-		mat4.multiply(mv, mmMatrix, mvMatrix);
-		var nMatrix = [];
-		mat4.copy(nMatrix, mv);
-		mat4.invert(nMatrix, nMatrix);
-		mat4.transpose(nMatrix, nMatrix);
-		gl.uniformMatrix4fv(shaderProgram.uNMatrix, false, nMatrix);
+		if(useMaterial){
+			var mv = [];
+			mat4.multiply(mv, mmMatrix, mvMatrix);
+			var nMatrix = [];
+			mat4.copy(nMatrix, mv);
+			mat4.invert(nMatrix, nMatrix);
+			mat4.transpose(nMatrix, nMatrix);
+			gl.uniformMatrix4fv(currentProgram.uNMatrix, false, nMatrix);
+		}
 	}
 
 	this.addTexture = function(type, src){
@@ -177,8 +179,9 @@ var Object = function(t, data, useMat){
 	this.setScale = function(s){
 		scale = s;
 	}
-	this.setRotation = function(r){
+	this.setRotation = function(r, d){
 		rotation = r;
+		deg = d;
 	}
 	this.getRotation = function(){
 		return rotation;

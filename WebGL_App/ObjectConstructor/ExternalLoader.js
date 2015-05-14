@@ -60,8 +60,8 @@ var ExternalLoader = function(){
 	}
 	this.extractNormals = function(json){
 		var normals = json.meshes[0].normals;
-
-		var normals;
+		
+		return normals;
 	}
 }
 	

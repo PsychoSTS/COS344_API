@@ -9,10 +9,10 @@ var Light = function(t){
 	var direction = [1,1,1];
 
 	this.draw = function(){
-		gl.uniform3fv(shaderProgram.uLightPosition, position);
-		gl.uniform4fv(shaderProgram.uLightAmbient, ambient);
-        gl.uniform4fv(shaderProgram.uLightSpecular, specular);
-        gl.uniform4fv(shaderProgram.uLightDiffuse, diffuse);
+		gl.uniform3fv(currentProgram.uLightPosition, position);
+		gl.uniform4fv(currentProgram.uLightAmbient, ambient);
+        gl.uniform4fv(currentProgram.uLightSpecular, specular);
+        gl.uniform4fv(currentProgram.uLightDiffuse, diffuse);
 	}
 
 	this.setPosition = function(p){

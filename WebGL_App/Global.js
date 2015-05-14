@@ -17,7 +17,9 @@ var COULDRON = couldron;
 //GL Context
 var gl;
 //Shader program
+var currentProgram;
 var shaderProgram;
+var gridShaderProgram;
 
 //Main transforms
 var mvMatrix = [];

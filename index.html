@@ -26,38 +26,37 @@
 			varying vec3 vLightDir;
 
 			void main(void){
-				vec3 L = normalize(vLightDir);
- 				vec3 N = normalize(vNormal);
-
- 				float lambertTerm = dot(N,-L);
-
- 				vec4 Ia = uLightAmbient;
-
- 				vec4 Id = vec4(0.0,0.0,0.0,1.0);
-
- 				vec4 Is = vec4(0.0,0.0,0.0,1.0);
-
- 				 if(lambertTerm > 0.0) //only if lambertTerm is positive
+				 vec3 L = normalize(vLightDir);
+				 vec3 N = normalize(vNormal);
+				 
+				 //Lambert's cosine law
+				 float lambertTerm = dot(N,-L);
+				 
+				 //Ambient Term
+				 vec4 Ia = uLightAmbient;
+				 
+				 //Diffuse Term
+				 vec4 Id = vec4(0.0,0.0,0.0,1.0);
+				 
+				 //Specular Term
+				 vec4 Is = vec4(0.0,0.0,0.0,1.0);
+				 
+				 if(lambertTerm > 0.0) //only if lambertTerm is positive
 				 {
 				  Id = uMaterialDiffuse * texture2D(uTSampler, vTextureCoord) * lambertTerm; //add diffuse term
 				  
-					  vec3 E = normalize(vEyeVec);
-					  vec3 R = reflect(L, N);
-					  float specular = pow( max(dot(R, E), 0.0), uMaterialShininess);
-					  
-					  Is = uLightDiffuse * specular; //add specular term 
+				  vec3 E = normalize(vEyeVec);
+				  vec3 R = reflect(L, N);
+				  float specular = pow( max(dot(R, E), 0.0), uMaterialShininess);
+				  
+				  Is = uLightDiffuse * specular; //add specular term 
 				 }
-
-				//if(uUseMaterial){
-					//Final color
-				 	vec4 finalColor = Ia + Id + Is;
-				 	finalColor.a = 1.0;
-					 
-				 	gl_FragColor = texture2D(uTSampler, vTextureCoord);//finalColor;
-				//}
-				/*else {
-					gl_FragColor = vColor;
-				}*/
+				 
+				 //Final color
+				 vec4 finalColor = Ia + Id + Is;
+				 finalColor.a = 1.0;
+				 
+				 gl_FragColor = finalColor;
 			}
 		</script>
 		<script id="shader-vs" type="x-shader/x-vertex">
@@ -83,29 +82,54 @@
 			varying vec3 vLightDir;
 			
 			void main(void){
+				vColor = aVertexColor;
+				vTextureCoord = aVertexTextureCoord;
 				mat4 MV = uMVMatrix * uMMatrix;
 
-				vec4 vertex = MV * vec4(aVertexPosition, 1.0);
-
-				vNormal = vec3(uNMatrix * vec4(aVertexNormal, 0.0));
-
-				vLightDir = vertex.xyz - uLightPosition;
-
-				vEyeVec = -vec3(vertex.xyz);
-
-				if(uUseMaterial){
-					vTextureCoord = aVertexTextureCoord;
-				}else{
-					vColor = aVertexColor;
-				}
-
-				gl_Position = uPMatrix * MV * vec4(aVertexPosition, 1.0);
+				 //Transformed vertex position
+				 vec4 vertex = MV * vec4(aVertexPosition, 1.0);
+				 
+				 //Transformed normal vector
+				 vNormal = vec3(uNMatrix * vec4(aVertexNormal, 0.0));
+				 
+				 //Light position
+				 vLightDir = vertex.xyz - (MV * vec4(uLightPosition,1.0)).xyz;
+				 
+				 //Vector Eye
+				 vEyeVec = -vec3(vertex.xyz);
+				 
+				 //Final vertex position
+				 gl_Position = uPMatrix * MV * vec4(aVertexPosition, 1.0);
 			}
 			
 		</script>
 
-		<!--LIBRARIES-->
+		<script id="shader-fs-grid" type="x-shader/x-fragment">
+			precision highp float;
+
+			varying vec4 vColor;
+			void main(void){
+				gl_FragColor = vColor;
+			}
+		</script>
+		<script id="shader-vs-grid" type="x-shader/x-vertex">
+			attribute vec3 aVertexPosition;
+			attribute vec4 aVertexColor;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat4 uMMatrix;
+
+			varying vec4 vColor;
+			void main(void){
+				vColor = aVertexColor;
+				gl_Position = uPMatrix * uMVMatrix * uMMatrix * vec4(aVertexPosition,1.0);
+			}
+		</script>
+
 		<script type="text/javascript" src="WebGL_App/Maths/gl-matrix.js"></script>
+		<!--LIBRARIES-->
+		<script type="text/javascript" src="WebGL_App/webgl-debug.js"></script>
 
 		<!--EXTERNAL BLENDER 3D MODELS-->
 		<script type="text/javascript" src="WebGL_App/Models/forestFloor.json"></script>

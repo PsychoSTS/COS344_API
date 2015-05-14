@@ -2,7 +2,7 @@ var Material = function(){
 	var diffuse = [1.0,1.0,1.0, 1.0];
 	var specular = [1.0,1.0,1.0, 1.0];
 	var ambient = [1.0, 1.0, 1.0, 1.0];
-	var materialShininess = 100;
+	var materialShininess = 250;
 
 	var opacity = 1;
 
@@ -37,14 +37,14 @@ var Material = function(){
 	}
 
 	this.setProperties = function(){
-		gl.uniform4fv(shaderProgram.uMaterialDiffuse, diffuse);
-		gl.uniform4fv(shaderProgram.uMaterialSpecular, specular);
-		gl.uniform4fv(shaderProgram.uMaterialAmbient, ambient);
-		gl.uniform1f(shaderProgram.uMaterialShininess, materialShininess);
+		gl.uniform4fv(currentProgram.uMaterialDiffuse, diffuse);
+		gl.uniform4fv(currentProgram.uMaterialSpecular, specular);
+		gl.uniform4fv(currentProgram.uMaterialAmbient, ambient);
+		gl.uniform1f(currentProgram.uMaterialShininess, materialShininess);
 
 		gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.uniform1i(shaderProgram.uTSampler, 0);
+        gl.uniform1i(currentProgram.uTSampler, 0);
 	}
 
 	var handleLoadedTexture = function(texture){

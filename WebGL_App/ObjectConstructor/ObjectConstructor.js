@@ -7,7 +7,7 @@ var ObjectConstructor = function(){
 		return obj;
 	}
 	this.createGrid = function(){
-		var obj = new Object(GRID, primitive.getPrimitive(GRID), true);
+		var obj = new Object(GRID, primitive.getPrimitive(GRID), false);
 		return obj;
 	}
 	this.createPyramid = function(){
@@ -22,7 +22,7 @@ var ObjectConstructor = function(){
 	this.loadExternal = function(object){
 		var properties = loader.loadJSONObject(object);	
 
-		var data = [properties[1], properties[2], properties[3], properties[4]];
+		var data = [properties[1], properties[2], properties[3], properties[4], properties[5]];
 		var obj = new Object(properties[0], data, true);
 		return obj;
 	}

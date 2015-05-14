@@ -10,14 +10,20 @@ var WebGL_App = function(c){
     *===========================================================*/
 	this.initApp = function(){
 		initGL(canvas);
+        ctx = WebGLDebugUtils.makeDebugContext(canvas.getContext("webgl"));
 		initBasicShaders();
 
 		gl.clearColor(0.1, 0.1, 0.1, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
         //INIT SCENE
-        /*var gridFloor = objectConstructor.createGrid();
-        scene.initScene(gridFloor);*/
+        var gridFloor = objectConstructor.createGrid();
+        scene.addGrid(gridFloor);
+
+        var sphere = objectConstructor.createUVSphere();
+        sphere.addTexture("textureMap", "WebGL_App/Textures/forestFloor_Edit.jpg");
+        scene.addAsset(sphere);
+
         var skySphere = objectConstructor.createUVSphere();
         skySphere.setScale(70);
         skySphere.addTexture("textureMap", "WebGL_App/Textures/stars.jpg");
@@ -48,7 +54,7 @@ var WebGL_App = function(c){
         scene.addAsset(couldron);
 
         var lightFirst = objectConstructor.createLight([2,2,2]);
-        scene.addAsset(lightFirst);
+        scene.addLight(lightFirst);
 
         //START RENDER
         tick();
@@ -67,6 +73,7 @@ var WebGL_App = function(c){
      }
     function initBasicShaders(){
     	shaderConstructor.initShaders();
+        shaderConstructor.initGridShader();
      }
 
 	/*==========================================================*
