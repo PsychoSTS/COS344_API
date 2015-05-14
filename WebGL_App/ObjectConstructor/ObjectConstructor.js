@@ -2,6 +2,10 @@ var ObjectConstructor = function(){
 	var primitive = new PrimitiveConstructor();
 	var loader = new ExternalLoader();
 
+	this.createPlane = function(){
+		var obj = new Object(PLANE, primitive.getPrimitive(PLANE), true);
+		return obj;
+	}
 	this.createCube = function(){
 		var obj = new Object(CUBE, primitive.getPrimitive(CUBE), true);
 		return obj;

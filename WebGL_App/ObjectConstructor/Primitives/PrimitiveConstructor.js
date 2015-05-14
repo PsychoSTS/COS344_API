@@ -13,6 +13,7 @@ var PrimitiveConstructor = function(){
 	var icosahedron = new Icosahedron();
 	var icosphere = new IcoSphere();
 	var uvsphere = new UVSphere();
+	var plane = new Plane();
 
 	/**
 	 *Gets and returns a primitive object's base properties
@@ -21,6 +22,14 @@ var PrimitiveConstructor = function(){
 	this.getPrimitive = function(t){
 		var data = [];
 		switch (t){
+			case PLANE:{
+				data.push(plane.vertices);
+				data.push(plane.indices);
+				data.push(plane.colors);
+				data.push(plane.textureCoords);
+				data.push(cube.normals);
+				break;
+			}
 			case CUBE:{
 				data.push(cube.vertices);
 				data.push(cube.indices);

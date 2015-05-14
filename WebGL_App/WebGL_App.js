@@ -17,7 +17,11 @@ var WebGL_App = function(c){
         gl.enable(gl.DEPTH_TEST);
 
         //INIT SCENE
-        var gridFloor = objectConstructor.createGrid();
+        var sphere = objectConstructor.createPlane();
+        sphere.addTexture("textureMap", "WebGL_App/Textures/forestFloor_Edit.jpg");
+        scene.addAsset(sphere);
+        
+        /*var gridFloor = objectConstructor.createGrid();
         scene.addGrid(gridFloor);
 
         var sphere = objectConstructor.createUVSphere();
@@ -51,10 +55,13 @@ var WebGL_App = function(c){
         var couldron = objectConstructor.loadExternal(COULDRON);
         couldron.setPosition([8, -1, 0]);
         couldron.addTexture("textureMap", "WebGL_App/Textures/rock_Edit.jpg");
-        scene.addAsset(couldron);
+        scene.addAsset(couldron);*/
 
         var lightFirst = objectConstructor.createLight([2,2,2]);
         scene.addLight(lightFirst);
+
+        info(gridShaderProgram);
+        info(shaderProgram);
 
         //START RENDER
         tick();

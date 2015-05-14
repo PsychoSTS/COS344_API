@@ -23,11 +23,10 @@ var Scene = function(){
 		controler.update();
 		transform.buildTransforms(camera);
 
-
-		currentProgram = gridShaderProgram;
+		/*currentProgram = gridShaderProgram;
 		gl.useProgram(gridShaderProgram);
 		transform.sendTransforms();
-		grid.draw();
+		grid.draw();*/
 
 		currentProgram = shaderProgram;
 		gl.useProgram(shaderProgram);

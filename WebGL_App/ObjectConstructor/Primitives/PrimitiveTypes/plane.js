@@ -3,6 +3,7 @@ var Plane = function(){
     this.colors;
     this.textureCoords;
     this.indices;
+    this.normals;
 
     this.generateVerts = function(){
     	var vertices = [
@@ -31,13 +32,30 @@ var Plane = function(){
     		0,	0,
     		1,	0
     	];
+
+    	this.textureCoords = textureCoords;
     }
-    this.generateIndices = function()[
-    	0,1,3,		1,2,3
-    ];
+    this.generateIndices = function(){
+    	var indices = [
+	    	0,1,3,		1,2,3
+	    ];
+
+	    this.indices = indices;
+	}
+	this.generateNormals = function(){
+		var normals = [
+			0,0,1,
+			0,0,1,
+			0,0,1,
+			0,0,1
+		];
+
+		this.normals = normals;
+	}
 
     this.generateVerts();
 	this.generateTextureCoords();
 	this.generateColors();
 	this.generateIndices();
+	this.generateNormals();
 }

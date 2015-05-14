@@ -1,11 +1,12 @@
 //GLOBAL CONSTANTS
-var CUBE = 0;
-var PYRAMID = 1;
-var ICOSAHEDRON = 2;
-var ICOSPHERE = 3;
-var UVSPHERE = 4;
-var GRID = 5;
-var CAMERA = 6;
+var PLANE = 0;
+var CUBE = 1;
+var PYRAMID = 2;
+var ICOSAHEDRON = 3;
+var ICOSPHERE = 4;
+var UVSPHERE = 5;
+var GRID = 6;
+var CAMERA = 7;
 
 //EXTERNAL MODELS
 var FOREST_FLOOR = forestFloor;
