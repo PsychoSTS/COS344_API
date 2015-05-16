@@ -37,5 +37,10 @@ var ObjectConstructor = function(){
 		return l;
 	}
 
+	this.createParticleSystem = function(position){
+		var partSyst = new particleSystem(position, false);
+		return partSyst;
+	}
+
 	//info("Object Constructor Created");
 }
